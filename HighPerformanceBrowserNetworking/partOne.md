@@ -10,7 +10,7 @@
 
 	逻辑或物理通信路径最大的吞吐量。
 
-![1-1.jpg](https://github.com/lulin1/reading-notes/edit/master/HighPerformanceBrowserNetworking/pics/1-1.jpg)
+![1-1.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/1-1.jpg)
 
 延迟是消息（message）或分组（packet）从起点到终点经历的时间。这个定义简单明了，但却掩盖了很多有用的信息。事实上，任何系统都有很多因素可能影响传送消息
 的时间。
