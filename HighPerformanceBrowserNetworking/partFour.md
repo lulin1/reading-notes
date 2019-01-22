@@ -47,5 +47,5 @@
 
 理解了每种协议的长处和短处,根据应用的需求恰当运用它们,就可以摆脱贫乏的用户体验,打造出高性能应用。
 
-Web Real-Time Communication(Web 实时通信,WebRTC)由一组标准、协议和JavaScript API 组成,用于实现浏览器之间(端到端)的音频、视频及数据共享。WebRTC 使得实时通信变成一种标准功能,任何 Web 应用都无需借助第三方插件和
+:bookmark: Web Real-Time Communication(Web 实时通信,WebRTC)由一组标准、协议和JavaScript API 组成,用于实现浏览器之间(端到端)的音频、视频及数据共享。WebRTC 使得实时通信变成一种标准功能,任何 Web 应用都无需借助第三方插件和
 专有软件,而是通过简单的 JavaScript API 即可利用。
