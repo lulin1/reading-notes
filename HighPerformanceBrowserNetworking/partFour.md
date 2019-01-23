@@ -1,9 +1,14 @@
 # chapter 14   浏览器网络概述
 
+![14-1.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/14-1.jpg)
+
+
 ## 14.1  连接管理与优化
 
-套接字是以池的形式进行管理的(图 14-2 )， 即按照来源,每个池都有自己的连接限制和安全约束。挂起的请求是排好队的、有优先次序的,然后再适时把它们绑定到池中个
-别的套接字上。除非服务器有意关闭连接,否则同一个套接字可以自动用于多个请求!
+套接字是以池的形式进行管理的(图 14-2 )， 即按照来源,每个池都有自己的连接限制和安全约束。挂起的请求是排好队的、有优先次序的,然后再适时把它们绑定到池中个别的套接字上。除非服务器有意关闭连接,否则同一个套接字可以自动用于多个请求!
+
+![14-2.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/14-2.jpg)
+
 
   • 来源
     由应用协议、域名和端口三个要件构成,比如 (http, www.example.com, 80) 与 (https, www.example.com, 443) 就是两个不同的来源。
@@ -42,6 +47,9 @@
 
 不存在哪个协议或API最好的问题。每个稍微复杂点的应用都会基于不同的 需求用到各种传输机制,包括读写浏览器缓存、协议开销、消息延迟、可靠性、数据 传 输 类 型, 等 等。某 些 协 议 的 交 付 延 迟 可 能 短 一 些( 比 如 Server-Sent Events、WebSocket),但却不能满足其他条件,比如利用浏览器缓存,或者在所有场景下支
 持高效的二进制传输(表 14-1)。
+
+![table-14-1.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/table-14-1.jpg)
+
 
 我们在这个表中有意忽略了 WebRTC,因为那是一种端到端的交付模型,与 XHR、SSE 和 WebSocket 协议有着根本的不同。
 
