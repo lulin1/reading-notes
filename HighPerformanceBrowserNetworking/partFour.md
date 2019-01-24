@@ -444,6 +444,8 @@ WebSocket 协议是一个独立完善的协议,可以在浏览器之外实现。
 
 客户端和服务器 WebSocket 应用通过基于消息的 API 通信:发送端提供任意 UTF-8或二进制的净荷,接收端在整个消息可用时收到通知。为此,WebSocket 使用了自定义的二进制分帧格式(图 17-1),把每个应用消息切分成一或多个帧,发送到目的地之后再组装起来,等到接收到完整的消息后再通知接收端。
 
+![17-1.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/17-1.jpg)
+
 
 	• 帧
 	最小的通信单位,包含可变长度的帧首部和净荷部分,净荷可能包含完整或部分应用消息。
@@ -571,6 +573,7 @@ WebSocket 是唯一一个能通过同一个 TCP 连接实现双向通信的机�
 	
 • SSE 可以实现服务器到客户端的高效、低延迟的文本数据流:客户端发起 SSE 连接,服务器使用事件源协议将更新流式发送给客户端。客户端在初次握手后,不能向服务器发送任何数据。
 
+![17-2.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/17-2.jpg)
 
 
 
@@ -699,10 +702,16 @@ WebRTC 脱开我们熟悉的 C/S 通信模型,重新设计了浏览器的网络�
 
 不过,好消息是 WebRTC 会让浏览器具备功能完备的音频和视频引擎(图 18-1),由它们替我们完成处理信号等琐碎的工作。
 
+![18-1.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-1.jpg)
+
+
 
 所有这一切都由浏览器负责,而且更重要的是,浏览器会动态调整其处理流程,以适应不断变化的音频和视频流及网络条件。经过浏览器这一系列处理之后,Web 应用接收到了优化的媒体流,然后可以将其输出到显示器和扬声器,发送给另外一端,或者使用 HTML5 的媒体 API 进行后期处理!
 
 通过 getUserMedia 获取音频和视频 W3C 的 Media Capture and Streams 规 范 规 定 了 一 套 新 JavaScript API, 应 用 可以 通 过 这 套 API 从 平 台 取 得 音 频 和 视 频 流, 并 对 它 们 进 行 操 作 和 处 理。 其 中,MediaStream 对象(图 18-2)是实现这个功能的主要接口。
+
+![18-2.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-2.jpg)
+
 
 	• MediaStream 对象包含一或多个 Track( MediaStreamTrack )。
 	
@@ -783,6 +792,7 @@ WebRTC 就使用 UDP 作为传输层协议:低延迟和及时性才是关键。�
 
 UDP 是浏览器实时通信的基础,但要完全达到 WebRTC 的要求,浏览器还需要位于其上的大量协议和服务的支持(图 18-3)。
 
+![18-3.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-3.jpg)
 
 	• ICE,即 Interactive Connectivity Establishment(RFC 5245)
 		 STUN,即 Session Traversal Utilities for NAT(RFC 5389)
@@ -798,6 +808,7 @@ ICE、STUN 和 TURN 是通过 UDP 建立并维护端到端连接所必需的。D
 
 RTCPeerConnection API 简介尽管用于建立和维护端到端连接涉及的协议很多,但浏览器中的应用 API 相对简单。其中, RTCPeerConnection 接口(图 18-4)就负责维护每一个端到端连接的完整生命周期:
 
+![18-4.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-4.jpg)
 
 
 简单地说, RTCPeerConnection 把所有连接设置、管理和状态都封装在了一个接口中。
@@ -821,6 +832,7 @@ RTCPeerConnection API 简介尽管用于建立和维护端到端连接涉及的�
 
 ### 18.4.1  发信号和协商会话
 
+![18-5.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-5.jpg)
 
 
 ### 18.4.2  会话描述协议 (SDP)
@@ -890,6 +902,7 @@ DTLS 对 TLS 记录协议的扩展,就是为每条握手记录明确添加了分
 
 记录序号、偏移值和重传计时器让 DTLS 在 UDP 之上实现了握手(图 18-12)。为保证过程完整,两端都要生成自已签名的证书,然后按照常规的 TLS 握手协议走。
 
+	![18-12.jpg](https://github.com/lulin1/reading-notes/blob/master/HighPerformanceBrowserNetworking/pics/18-12.jpg)
 	
 	完整的 DTLS 握手需要两次往返,这一点必须牢记。换句话说,建立端到端的连接会产生额外延迟。
 	
@@ -926,26 +939,28 @@ DataChannel 支持端到端的任意应用数据交换,就像 WebSocket 一样,�
 端 WebRTC 应用性能的一些注意事项。
 
 	• 发信服务
-	 使用低延迟传输机制;
-	 提供足够的容量;
-	 建立连接后,考虑使用 DataChannel 发信。
-	• 防火墙和 NAT穿越
-	 初始化 RTCPeerConnection 时提供 STUN 服务器;
-	 尽可能使用增量 ICE,虽然发信次数多,但建立连接速度快;
-	 提供 STUN 服务器,以备端到端连接失败后转发数据;
-	 预计并保证 TURN 转发时容量足够用。
+	  使用低延迟传输机制;
+	  提供足够的容量;
+	  建立连接后,考虑使用 DataChannel 发信。
+	  防火墙和 NAT穿越
+	  初始化 RTCPeerConnection 时提供 STUN 服务器;
+	  尽可能使用增量 ICE,虽然发信次数多,但建立连接速度快;
+	  提供 STUN 服务器,以备端到端连接失败后转发数据;
+	  预计并保证 TURN 转发时容量足够用。
+	  
 	• 数据分发
-	 对于大型多方通信,考虑使用超级节点或专用的中间设备;
-	 中间设备在转发数据前,考虑先对其进行优化或压缩。
+	  对于大型多方通信,考虑使用超级节点或专用的中间设备;
+	  中间设备在转发数据前,考虑先对其进行优化或压缩。
+	  
 	• 数据效率
-	 对音频和视频流指定适当的媒体约束;
-	 优化通过 DataChannel 发送的二进制净荷;
-	 考虑压缩通过 DataChannel 发送的 UTF-8 数据;
-	 监控 DataChannel 缓冲数据的量,同时注意适应网络条件变化。
+	  对音频和视频流指定适当的媒体约束;
+	  优化通过 DataChannel 发送的二进制净荷;
+	  考虑压缩通过 DataChannel 发送的 UTF-8 数据;
+	  监控 DataChannel 缓冲数据的量,同时注意适应网络条件变化。
+	  
 	• 交付及可靠性
-	 使用乱序交付避免队首阻塞;
-	 如果使用有序交付,把消息大小控制到最小,以降低队首阻塞的影响;
-	 发送小消息(<1150 字节),以便将分段应用消息造成的丢包损失降至最低;
-	 对部分可靠交付,设置适当的重传次数和超时间隔;“正确的”设置取决于消
-	息大小、应用数据类型和端与端之间的延迟。
+	  使用乱序交付避免队首阻塞;
+	  如果使用有序交付,把消息大小控制到最小,以降低队首阻塞的影响;
+	  发送小消息(<1150 字节),以便将分段应用消息造成的丢包损失降至最低;
+	  对部分可靠交付,设置适当的重传次数和超时间隔;“正确的”设置取决于消息大小、应用数据类型和端与端之间的延迟。
 	
